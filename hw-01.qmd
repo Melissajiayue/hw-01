@@ -1,6 +1,6 @@
 ---
 title: "HW 01"
-author: "INSERT YOUR NAME HERE"
+author: "Jiayue He"
 format: 
   html:
     embed-resources: true
@@ -9,7 +9,8 @@ toc: true
 
 ## 0 - Setup
 
-```{r setup
+```{r} 
+
 if (!require("pacman")) 
   install.packages("pacman")
 
