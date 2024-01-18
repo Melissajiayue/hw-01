@@ -22,10 +22,28 @@ devtools::install_github("tidyverse/dsbox")
 
 ## 1 - Road traffic accidents in Edinburgh
 
+1) get basic dataset: 
 ```{r label-me-1}
 #inspect the document
 ??accidents
 library(ggplot2)
+library(dplyr)
+accident<-dsbox::accidents
+accident
+```
+2) start plot 
+```{r}
+
+#find color website: https://imagecolorpicker.com/en
+accident_noFatal <- accident %>% filter(severity != "Fatal")
+
+time_plot<-ggplot(accident_noFatal, aes(x = time, fill = severity)) +
+  geom_density(alpha = 0.7) +
+  scale_fill_manual(values = c("Fatal" = "#a993b0", "Serious" = "#9ec9c7", "Slight" = "#fef39f"))+ xlab("Time of day") + 
+  ggtitle("weekend")
+time_plot
+
+
 
 ```
 
