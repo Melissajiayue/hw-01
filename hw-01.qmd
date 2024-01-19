@@ -167,15 +167,20 @@ men_nyc_marathon
 women_nyc_marathon <- nyc_marathon%>% filter(division %in% c('Women'))
 women_nyc_marathon
 
+y_min <- min(nyc_marathon$time_hrs, na.rm = TRUE)
+y_max <- max(nyc_marathon$time_hrs, na.rm = TRUE)
+
 
 men_box_plot <- ggplot(men_nyc_marathon, aes(y = time_hrs)) +
   geom_boxplot(fill = 'green') +
-  labs(title = 'man', y = 'Time_Hours')
+  labs(title = 'man', y = 'Time_Hours')+
+  coord_cartesian(ylim = c(y_min, y_max)) 
 men_box_plot
 
 women_box_plot <- ggplot(women_nyc_marathon, aes(y = time_hrs)) +
   geom_boxplot(fill = 'red') +
-  labs(title = 'woman ', y = 'Time_Hours')
+  labs(title = 'woman ', y = 'Time_Hours')+
+  coord_cartesian(ylim = c(y_min, y_max)) 
 women_box_plot
 
 
@@ -192,6 +197,7 @@ side_box_plot
 c. What information in the above plot is redundant? Redo the plot avoiding this redundancy. How does this update change the data-to-ink ratio?
 
 ```{r}
+
 
 
 
