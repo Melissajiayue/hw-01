@@ -43,8 +43,7 @@ accident
 weekday_accident <- accident %>% filter(day_of_week != c('Saturday', 'Sunday'))
 weekday_accident
 
-weekday_total <- weekday_accident %>% group_by(time, severity) %>%
-  summarise(total_accidents = sum(vehicles))
+weekday_total <- weekday_accident %>% group_by(time, severity)
 weekday_total
 
 
@@ -63,8 +62,7 @@ weekday_plot
 weekend_accident <- accident %>% filter(day_of_week %in% c('Saturday', 'Sunday'))
 weekend_accident
 
-weekend_total <- weekend_accident %>% group_by(time, severity) %>%
-  summarise(total_accidents = sum(vehicles))
+weekend_total <- weekend_accident %>% group_by(time, severity)
 weekend_total
 
 
