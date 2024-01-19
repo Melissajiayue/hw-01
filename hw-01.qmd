@@ -126,7 +126,7 @@ a. Create a histogram and a box plot of the distribution of marathon times of al
 ```{r label-me-2}
 
 hist_plot <- ggplot(nyc_marathon, aes(x = time_hrs)) +
-  geom_histogram(binwidth = 0.05, fill = '#fef39f', color = 'black') +
+  geom_histogram(binwidth = 0.05, fill = 'yellow', color = 'black') +
   labs(title = 'Histogram', x = 'Time_Hours', y = 'Runners')
 
 
@@ -137,7 +137,7 @@ hist_plot
 ```{r label-me-2}
 
 box_plot <- ggplot(nyc_marathon, aes(x = time_hrs)) +
-  geom_boxplot(fill = 'green') +
+  geom_boxplot(fill = 'yellow') +
   labs(title = 'Box Plot ', x = 'Time_Hours')
 
 box_plot
@@ -198,8 +198,15 @@ c. What information in the above plot is redundant? Redo the plot avoiding this 
 
 ```{r}
 
+new_side_box_plot<-ggplot(nyc_marathon, aes(x = division, y = time_hrs, fill = division)) +
+  geom_boxplot() +
+  scale_fill_manual(values = c("Men" = "green", "Women" = "red")) +  
+  labs(title = "Marathon Times for Men and Women",
+       x = "Division",
+       y = "time_hour") +
+  theme_minimal()  
 
-
+new_side_box_plot
 
 
 ```
