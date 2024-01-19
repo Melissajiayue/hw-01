@@ -109,12 +109,20 @@ combined_plot
 In summary, these plots can provide insights about when accidents are more likely to occur and how accident severity distributions over a day during a week. 
 
 ## 2 - NYC marathon winners
+
+loading packages and dataset 
+```{r label-me-2}
+install.packages("openintro")
+install.packages("airports")
+install.packages("cherryblossom")
+install.packages("usdata")
+library(openintro)
+nyc_marathon
+
+```
 a. Create a histogram and a box plot of the distribution of marathon times of all runners in the dataset. What features of the distribution are apparent in the histogram and not the box plot? What features are apparent in the box plot but not in the histogram?
 
-
 ```{r label-me-2}
-
-??nyc_marathon
 
 
 ```
@@ -137,11 +145,38 @@ d. Visualize the marathon times of men and women over the years. As is usual wit
 
 
 ## 3 - US counties
+a. What does the following code do? Does it work? Does it make sense? Why/why not?
 ```{r}
+??contry
+ggplot(county) +
+  geom_point(aes(x = median_edu, y = median_hh_income)) +
+  geom_boxplot(aes(x = smoking_ban, y = pop2017))
+```
+b. Which of the following two plots makes it easier to compare poverty levels (poverty) across people from different median education levels (median_edu)? What does this say about when to place a faceting variable across rows or columns?
+```{r}
+ggplot(county %>% filter(!is.na(median_edu))) + 
+  geom_point(aes(x = homeownership, y = poverty)) + 
+  facet_grid(median_edu ~ .)
+```
+```{r}
+ggplot(county %>% filter(!is.na(median_edu))) + 
+  geom_point(aes(x = homeownership, y = poverty)) + 
+  facet_grid(. ~ median_edu)
+```
 
+c. Recreate the R code necessary to generate the following graphs. Note that wherever a categorical variable is used in the plot, it’s metro.
+
+```{r}
 ```
 
 ## 4 - Rental apartments in SF
+
+```{r}
+```
+
+
+```{r}
+```
 
 ```{r}
 ```
