@@ -208,7 +208,13 @@ new_side_box_plot<-ggplot(nyc_marathon, aes(x = division, y = time_hrs, fill = d
 
 new_side_box_plot
 
+#How does this update change the data-to-ink ratio?
 
+# in the previous question, I created two basic graphs, and then combine them together. The background is dark, and there are two y axis lables, and the women's label is even in the middle of the graph which can be district. 
+
+#while in this new graph, I plot two plots in one single plot and put them side-by-side. I also used theme_minimal() to reduce the unnecessary background color so the main graph can be more distinct. 
+
+#in addition, in the previous graph, there are two title, but in the new graph, the title turns to the x-axis label which reduce the ink and make it is more convinent to observe and compare. 
 ```
 d. Visualize the marathon times of men and women over the years. As is usual with time series plot, year should go on the x-axis. Use different colors and shapes to represent the times for men and women. Make sure your colors match those in the previous part. Once you have your plot, describe what is visible in this plot but not in the others.
 
