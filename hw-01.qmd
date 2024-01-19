@@ -110,7 +110,8 @@ In summary, these plots can provide insights about when accidents are more likel
 
 ## 2 - NYC marathon winners
 
-loading packages and dataset 
+loading packages and dataset: 
+
 ```{r label-me-2}
 install.packages("openintro")
 install.packages("airports")
@@ -118,14 +119,38 @@ install.packages("cherryblossom")
 install.packages("usdata")
 library(openintro)
 nyc_marathon
-
 ```
 a. Create a histogram and a box plot of the distribution of marathon times of all runners in the dataset. What features of the distribution are apparent in the histogram and not the box plot? What features are apparent in the box plot but not in the histogram?
 
+1) histogram: 
 ```{r label-me-2}
 
+hist_plot <- ggplot(nyc_marathon, aes(x = time_hrs)) +
+  geom_histogram(binwidth = 0.05, fill = '#fef39f', color = 'black') +
+  labs(title = 'Histogram', x = 'Time_Hours', y = 'Runners')
+
+
+
+hist_plot 
+```
+2) box plot: 
+```{r label-me-2}
+
+box_plot <- ggplot(nyc_marathon, aes(x = time_hrs)) +
+  geom_boxplot(fill = 'green') +
+  labs(title = 'Box Plot ', x = 'Time_Hours')
+
+box_plot
 
 ```
+3) What features of the distribution are apparent in the histogram and not the box plot? 
+  a) 
+
+
+4) What features are apparent in the box plot but not in the histogram?
+  a) 
+
+
 b. Create a side-by-side box plots of marathon times for men and women. Use different colors for the each of the box plots – do not use the default colors, but instead manually define them (you can choose any two colors you want). Based on the plots you made, compare the distribution of marathon times for men and women.
 
 ```{r}
