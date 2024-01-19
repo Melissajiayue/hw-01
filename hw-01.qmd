@@ -72,7 +72,41 @@ weekend_plot
 4) integrate the plot 
 ```{r}
 
+weekday_accident$day_type <- 'Weekday'
+weekend_accident$day_type <- 'Weekend'
+
+total_accidents <- bind_rows(weekday_accident, weekend_accident)
+total_accidents
+
+combined_plot <- ggplot(total_accidents, aes(x = time, fill = severity)) +
+  geom_density(alpha = 0.8) +
+  facet_wrap(~ day_type, ncol = 1, scales = 'fixed') +
+  scale_fill_manual(values = c("Fatal" = "#a993b0", "Serious" = "#9ec9c7", "Slight" = "#fef39f")) +
+  labs(title = "Number of accidents throughout the day",
+       subtitle = "By day of week and severity",
+       x = "Time of day",
+       y = "Density") +
+  theme_minimal() +
+  theme(plot.title = element_text(hjust = 0), 
+        plot.subtitle = element_text(hjust = 0),
+        legend.position = "right")
+
+combined_plot
+
 ```
+interpret in context of the data: 
+
+1) The plot plots Number of accidents throughout the day based on two catalogs: weekday accidents and weekend accidents. the x axis represents the time period in a day, while the y axis represents the density of the accident. There are three categories of accidents, namely slight accident, serious accident, and fatal accident. 
+
+2) The plot reflects the Number of accidents happened throughout the day, in a whole week including weekdays and weekend, the slight accident happens most frequently on average in a day. 
+
+3) In the weekdays, the fatal accident happens most frequently between 11:00 to 12:00, and both slight and serious accident happens most frequently around 17:00 in a day. 
+
+4) In the weekend, there is no fatal accident, and the slight accident happens most frequently around 16:00, and serious accident happens most frequently around 19:00. 
+
+5) The plot also compares the number of accidents between weekdays and weekend. It show that there is no fatal accident happened on weekend, and the peaks of all kind of accidents happened on weekend are lower than that on weekdays. 
+
+In summary, these plots can provide insights about when accidents are more likely to occur and how accident severity distributions over a day during a week. 
 
 ## 2 - NYC marathon winners
 
