@@ -31,19 +31,43 @@ library(dplyr)
 accident<-dsbox::accidents
 accident
 ```
-2) start plot 
+2) start plot_weekdays 
 ```{r}
 
 #find color website: https://imagecolorpicker.com/en
 accident_noFatal <- accident %>% filter(severity != "Fatal")
 
-time_plot<-ggplot(accident_noFatal, aes(x = time, fill = severity)) +
+weekday_accident <- accident %>% filter(day_of_week %in% c('Monday', 'Thuesday','Wednesday','Thurday','Friday'))
+weekday_accident
+
+weekday_total <- weekday_accident %>% group_by(time, severity) %>%
+  summarise(total_accidents = sum(vehicles))
+weekday_total
+
+
+weekday_plot<-ggplot(weekday_total, aes(x = time, fill = severity)) +
   geom_density(alpha = 0.7) +
-  scale_fill_manual(values = c("Fatal" = "#a993b0", "Serious" = "#9ec9c7", "Slight" = "#fef39f"))+ xlab("Time of day") + 
-  ggtitle("weekend")
-time_plot
+  scale_fill_manual(values = c("Fatal" = "#a993b0", "Serious" = "#9ec9c7", "Slight" = "#fef39f"))+ xlab("Time of day") 
+
+weekday_plot
+
+```
+3) another half plot 
+```{r}
+
+weekend_accident <- accident %>% filter(day_of_week %in% c('Saturday', 'Sunday'))
+weekend_accident
+
+weekend_total <- weekend_accident %>% group_by(time, severity) %>%
+  summarise(total_accidents = sum(vehicles))
+weekend_total
 
 
+weekend_plot<-ggplot(weekend_total, aes(x = time, fill = severity)) +
+  geom_density(alpha = 0.7) +
+  scale_fill_manual(values = c("Fatal" = "#a993b0", "Serious" = "#9ec9c7", "Slight" = "#fef39f"))+ xlab("weekend") 
+
+weekend_plot
 
 ```
 
