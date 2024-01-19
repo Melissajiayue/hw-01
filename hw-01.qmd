@@ -220,6 +220,21 @@ d. Visualize the marathon times of men and women over the years. As is usual wit
 
 ```{r}
 
+over_year_plot <- ggplot(nyc_marathon, aes(x = year, y = time_hrs, color = division, shape = division)) +
+  geom_point() + 
+  scale_color_manual(values = c("Men" = "green", "Women" ="red")) +
+  scale_shape_manual(values = c("Men" = 17, "Women" = 15)) + 
+  labs(title = 'Marathon Times Over the Years', x = 'Year', y = "Time_Hours") +
+  theme_minimal()  
+
+over_year_plot
+
+#describe what is visible in this plot but not in the others.
+
+#1) this plot can show the trend of marathon finish times acorss the year for both men and women. 
+#2) It also shows that after 1980, the finish time dropped largely for both man and women 
+#3) This plot also show the finsih time differnece between men and women. It looks like the difference of time between men and women was similar over the years. 
+
 
 ```
 
