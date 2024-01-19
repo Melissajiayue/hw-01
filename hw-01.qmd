@@ -287,15 +287,41 @@ ggplot(county %>% filter(!is.na(median_edu))) +
   #(.~ variable) makes graph vertically align, it is useful when people want to compare changes across. the x axis for different categories. 
 
 ```
-```{r}
-ggplot(county %>% filter(!is.na(median_edu))) + 
-  geom_point(aes(x = homeownership, y = poverty)) + 
-  facet_grid(. ~ median_edu)
-```
 
 c. Recreate the R code necessary to generate the following graphs. Note that wherever a categorical variable is used in the plot, it’s metro.
 
 ```{r}
+#plot A
+PlotA<-ggplot(county,aes(x = homeownership, y = poverty)) + 
+  geom_point() + 
+  ggtitle("Plot A")
+PlotA
+
+#plot B
+PlotB<-ggplot(county,aes(x = homeownership, y = poverty)) + 
+  geom_point() + 
+  geom_smooth(method = "loess", color = "blue", se = FALSE) + 
+  ggtitle("Plot B")
+PlotB
+
+#plot C
+PlotC<-ggplot(county,aes(x = homeownership, y = poverty)) + 
+  geom_point() + 
+  geom_smooth(aes(fill = metro), color = "green", se = FALSE) + 
+  ggtitle("Plot C")+
+  theme(legend.position = "none")
+
+PlotC
+
+#plot D
+PlotD<-ggplot(county,aes(x = homeownership, y = poverty)) + 
+  geom_smooth(aes(fill = metro), color = "blue", se = FALSE) + 
+  geom_point() + 
+  ggtitle("Plot D")+
+  theme(legend.position = "none")
+PlotD
+
+
 ```
 
 ## 4 - Rental apartments in SF
