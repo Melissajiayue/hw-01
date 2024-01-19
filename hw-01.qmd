@@ -94,7 +94,7 @@ combined_plot <- ggplot(total_accidents, aes(x = time, fill = severity)) +
 combined_plot
 
 ```
-interpret in context of the data: 
+5) interpret in context of the data: 
 
 1) The plot plots Number of accidents throughout the day based on two catalogs: weekday accidents and weekend accidents. the x axis represents the time period in a day, while the y axis represents the density of the accident. There are three categories of accidents, namely slight accident, serious accident, and fatal accident. 
 
@@ -109,15 +109,44 @@ interpret in context of the data:
 In summary, these plots can provide insights about when accidents are more likely to occur and how accident severity distributions over a day during a week. 
 
 ## 2 - NYC marathon winners
+a. Create a histogram and a box plot of the distribution of marathon times of all runners in the dataset. What features of the distribution are apparent in the histogram and not the box plot? What features are apparent in the box plot but not in the histogram?
+
 
 ```{r label-me-2}
 
+??nyc_marathon
+
+
+```
+b. Create a side-by-side box plots of marathon times for men and women. Use different colors for the each of the box plots – do not use the default colors, but instead manually define them (you can choose any two colors you want). Based on the plots you made, compare the distribution of marathon times for men and women.
+
+```{r}
+
+```
+c. What information in the above plot is redundant? Redo the plot avoiding this redundancy. How does this update change the data-to-ink ratio?
+
+```{r}
+
+
+```
+d. Visualize the marathon times of men and women over the years. As is usual with time series plot, year should go on the x-axis. Use different colors and shapes to represent the times for men and women. Make sure your colors match those in the previous part. Once you have your plot, describe what is visible in this plot but not in the others.
+```{r}
+
+
 ```
 
-## 3 - US counties
 
+## 3 - US counties
+```{r}
+
+```
 
 ## 4 - Rental apartments in SF
 
+```{r}
+```
 
 ## 5 - Napoleon’s march.
+```{r}
+
+```
