@@ -144,25 +144,61 @@ box_plot
 
 ```
 3) What features of the distribution are apparent in the histogram and not the box plot? 
-  a) 
-
+  a) It shows a general distribution.
+  b) The distribution is right-skewed. 
+  c) There are two peaks, which can tell at which time period most of runner funish the marathon. 
+  
 
 4) What features are apparent in the box plot but not in the histogram?
-  a) 
+  a) It shows that there are four outliners. 
+  b) The horizontal line tells that the normal finishing time
+  c) the vertical line tell the medium
+  d) It also tells the interquartile range which present about 1/2 data 
 
 
 b. Create a side-by-side box plots of marathon times for men and women. Use different colors for the each of the box plots – do not use the default colors, but instead manually define them (you can choose any two colors you want). Based on the plots you made, compare the distribution of marathon times for men and women.
 
 ```{r}
 
+
+men_nyc_marathon <- nyc_marathon %>% filter(division %in% c('Men'))
+men_nyc_marathon
+
+women_nyc_marathon <- nyc_marathon%>% filter(division %in% c('Women'))
+women_nyc_marathon
+
+
+men_box_plot <- ggplot(men_nyc_marathon, aes(y = time_hrs)) +
+  geom_boxplot(fill = 'green') +
+  labs(title = 'man', y = 'Time_Hours')
+men_box_plot
+
+women_box_plot <- ggplot(women_nyc_marathon, aes(y = time_hrs)) +
+  geom_boxplot(fill = 'red') +
+  labs(title = 'woman ', y = 'Time_Hours')
+women_box_plot
+
+
+side_box_plot<-men_box_plot|women_box_plot
+
+side_box_plot
+
+#Based on the plots you made, compare the distribution of marathon times for men and women: 
+
+#compared distribution, it shows that women used more time to finish the marathon then men.
+  
 ```
+
 c. What information in the above plot is redundant? Redo the plot avoiding this redundancy. How does this update change the data-to-ink ratio?
 
 ```{r}
 
 
+
+
 ```
 d. Visualize the marathon times of men and women over the years. As is usual with time series plot, year should go on the x-axis. Use different colors and shapes to represent the times for men and women. Make sure your colors match those in the previous part. Once you have your plot, describe what is visible in this plot but not in the others.
+
 ```{r}
 
 
