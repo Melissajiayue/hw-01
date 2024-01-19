@@ -43,16 +43,13 @@ accident
 weekday_accident <- accident %>% filter(day_of_week != c('Saturday', 'Sunday'))
 weekday_accident
 
-weekday_total <- weekday_accident %>% group_by(time, severity)
-weekday_total
-
-
-weekday_plot<-ggplot(weekday_total, aes(x = time, fill = severity)) +
-  geom_density(alpha = 0.7) +
+weekday_plot<-ggplot(weekday_accident, aes(x = time, fill = severity)) +
+  geom_density(alpha = 0.8) +
   scale_fill_manual(values = c("Fatal" = "#a993b0", "Serious" = "#9ec9c7", "Slight" = "#fef39f"))+ xlab("weekday") +
   ggtitle("weekday")
 
 weekday_plot
+
 
 ```
 3) another plot_weekend
@@ -62,25 +59,18 @@ weekday_plot
 weekend_accident <- accident %>% filter(day_of_week %in% c('Saturday', 'Sunday'))
 weekend_accident
 
-weekend_total <- weekend_accident %>% group_by(time, severity)
-weekend_total
 
-
-weekend_plot<-ggplot(weekend_total, aes(x = time, fill = severity)) +
-  geom_density(alpha = 0.7) +
+weekend_plot<-ggplot(weekend_accident, aes(x = time, fill = severity)) +
+  geom_density(alpha = 0.8) +
+  scale_y_continuous(breaks = c(0, 1e-05, 2e-05)) +
   scale_fill_manual(values = c("Fatal" = "#a993b0", "Serious" = "#9ec9c7", "Slight" = "#fef39f"))+ xlab("Time of day")+
   ggtitle("weekend")
-
-
 
 weekend_plot
 
 ```
 4) integrate the plot 
 ```{r}
-
-
-
 
 ```
 
