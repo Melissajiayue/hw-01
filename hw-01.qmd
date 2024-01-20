@@ -291,22 +291,23 @@ ggplot(county %>% filter(!is.na(median_edu))) +
 c. Recreate the R code necessary to generate the following graphs. Note that wherever a categorical variable is used in the plot, it’s metro.
 
 ```{r}
+par(mfrow = c(4, 2))
 #plot A
 PlotA<-ggplot(county,aes(x = homeownership, y = poverty)) + 
-  geom_point() + 
+  geom_point(size = 2.5) + 
   ggtitle("Plot A")
 PlotA
 
 #plot B
 PlotB<-ggplot(county,aes(x = homeownership, y = poverty)) + 
-  geom_point() + 
+  geom_point(size = 2.5) + 
   geom_smooth(method = "loess", color = "blue", se = FALSE) + 
   ggtitle("Plot B")
 PlotB
 
 #plot C
 PlotC<-ggplot(county,aes(x = homeownership, y = poverty)) + 
-  geom_point() + 
+  geom_point(size = 2.5) + 
   geom_smooth(aes(fill = metro), color = "green", se = FALSE) + 
   ggtitle("Plot C")+
   theme(legend.position = "none")
@@ -316,17 +317,63 @@ PlotC
 #plot D
 PlotD<-ggplot(county,aes(x = homeownership, y = poverty)) + 
   geom_smooth(aes(fill = metro), color = "blue", se = FALSE) + 
-  geom_point() + 
+  geom_point(size = 2.5) + 
   ggtitle("Plot D")+
   theme(legend.position = "none")
-PlotD
 
+PlotD
+#plot E
+
+PlotE <- ggplot(county, aes(x = homeownership, y = poverty)) + 
+  geom_point(aes(color = metro), size = 2.5) + 
+  scale_color_manual(values = c("no" = "#f7766d", "yes" = "#02bfc4", "NA" = "#7f7f7f")) +
+  ggnewscale::new_scale_color() +
+  geom_smooth(aes(linetype = metro), se = FALSE, color = "blue") + 
+  scale_linetype_manual("metro ", values = c("no" = "solid", "yes" = "twodash")) +
+  ggtitle("Plot E")
+
+PlotE
+
+#plot F
+
+PlotF <- ggplot(county, aes(x = homeownership, y = poverty)) + 
+  geom_point(aes(color = metro), size = 2.5) + 
+  scale_color_manual(values = c("no" = "#f7766d", "yes" = "#02bfc4", "NA" = "#7f7f7f")) +
+  geom_smooth(aes(color = metro), se = FALSE) + 
+  ggtitle("Plot F")
+PlotF
+
+#plot G
+
+PlotG<-ggplot(county,aes(x = homeownership, y = poverty,color = metro)) + 
+  geom_point(size = 2.5) + 
+  scale_color_manual(values = c("no" = "#f7766d", "yes" = "#02bfc4", "NA" = "#7f7f7f")) +
+  geom_smooth(method = "loess", color = "blue", se = FALSE) + 
+  ggtitle("Plot G")
+  
+PlotG
+#plot H
+
+PlotH<-ggplot(county,aes(x = homeownership, y = poverty,color = metro)) + 
+  geom_point(size = 2.5) + 
+  scale_color_manual(values = c("no" = "#f7766d", "yes" = "#02bfc4", "<NA>" = "#7f7f7f")) +
+  ggtitle("Plot H")
+PlotH
+```
+
+```{r}
 
 ```
+
+```{r}
+
+```
+
 
 ## 4 - Rental apartments in SF
 
 ```{r}
+
 ```
 
 
