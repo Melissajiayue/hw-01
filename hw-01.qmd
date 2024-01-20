@@ -362,13 +362,9 @@ PlotH
 ```
 
 ```{r}
-
+combined_plot<-PlotA+PlotB+PlotC+PlotD+PlotE+PlotF+PlotG+PlotH+plot_layout(ncol = 2, nrow = 4)
+combined_plot
 ```
-
-```{r}
-
-```
-
 
 ## 4 - Rental apartments in SF
 
