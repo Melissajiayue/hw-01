@@ -369,11 +369,14 @@ combined_plot
 ## 4 - Rental apartments in SF
 
 ```{r}
-
+# Get the Data
+install.packages("tidytuesdayR")
+library(tidytuesdayR)
+rent <- tuesdata$rent
+rent
 ```
-
-
 ```{r}
+
 ```
 
 ```{r}
