@@ -372,10 +372,44 @@ combined_plot
 # Get the Data
 install.packages("tidytuesdayR")
 library(tidytuesdayR)
+install.packages("tidyverse")
+library(tidyverse)
 rent <- tuesdata$rent
 rent
 ```
+1) Limit your analysis to rentals where the full unit is available, i.e. (room_in_apt	== 0).
+2) You have the flexibility to choose which years and which neighborhoods. Note that you should have a maximum of 8 neighborhoods on your visualization, but one or more of them can be a combination of many (e.g., an "other" category). 
 ```{r}
+
+library(dplyr)
+
+# Filter data for full units only and only keep columns with year, nhood, price, beds
+sf_full_less <- rent %>%
+  filter(city == "san francisco", room_in_apt == 0) %>%
+  select(year, nhood, price, beds)
+
+#add columns for price per bedroom and clean the data by reducing the NA rows. 
+rent_new <- sf_full_less %>%
+  mutate(price_per_bedroom = ifelse(beds > 0, price / beds, NA))%>%
+  filter(!is.na(beds) & !is.na(price_per_bedroom))
+rent_new
+
+neighborhoods <- rent_new%>% 
+  distinct(nhood) %>% 
+  arrange(nhood) %>% 
+  pull(nhood)
+neighborhoods
+
+#get eight neiborhood
+rent_updated <- rent_new %>% 
+  filter(nhood %in% c("alamo square", "bernal", "bayview", "treasure island", "twin peaks", "lakeshore", "pacific heights", "russian hill"))
+
+rent_updated
+
+```
+Create a visualization that will help you compare the distribution of rental prices (price) per bedroom (beds) across neighborhoods (nhood) in the city of San Francisco (city == "san francisco"), over time. Your visualization should also display some measure of the variability in your data. You get to decide what type of visualization to create and there is more than one correct answer! In your answer, include a brief description of why you made the choices you made as well as an interpretation of the findings of how rental prices vary over time and neighborhoods in San Francisco.
+```{r}
+
 
 ```
 
