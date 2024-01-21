@@ -380,9 +380,8 @@ rent
 1) Limit your analysis to rentals where the full unit is available, i.e. (room_in_apt	== 0).
 2) You have the flexibility to choose which years and which neighborhoods. Note that you should have a maximum of 8 neighborhoods on your visualization, but one or more of them can be a combination of many (e.g., an "other" category). 
 ```{r}
-
-library(dplyr)
-
+library(stringr)
+library(purrr)
 # Filter data for full units only and only keep columns with year, nhood, price, beds
 sf_full_less <- rent %>%
   filter(city == "san francisco", room_in_apt == 0) %>%
@@ -394,24 +393,134 @@ rent_new <- sf_full_less %>%
   filter(!is.na(beds) & !is.na(price_per_bedroom))
 rent_new
 
-neighborhoods <- rent_new%>% 
-  distinct(nhood) %>% 
-  arrange(nhood) %>% 
-  pull(nhood)
-neighborhoods
+```
+
+pick 8 eight neiborhood with same years. 
+```{r}
+# lists all the years each neighborhood has
+nhood_years <- rent_new %>%
+  group_by(nhood) %>%
+  summarize(years_list = list(sort(unique(year)))) %>%
+  mutate(years_string = map_chr(years_list, ~ paste(.x, collapse = ', '))) %>%
+  select(-years_list) %>%
+  ungroup()
+
+nhood_years
+
+# find neighborhoods with identical years_string, 
+identical_years <- nhood_years %>%
+  add_count(years_string) %>% 
+  filter(n == max(n)) %>%
+  pull(nhood) 
+
+identical_years 
+
+#check if they have the same number of years
+shared_years_nhoods_num <- rent_new %>%
+  filter(nhood %in% c("SOMA / south beach", "bernal", "diamond heights", "ingleside", "lower haight", "noe valley", "pacific heights", "presidio hts / laurel hts / lake st", "USF / anza vista", "civic / van ness", "cole valley", "glen park", "lakeshore", "marina / cow hollow", "outer sunset", "potrero hill", "north beach / telegraph hill", "parkside", "sea cliff")) %>%
+  group_by(nhood) %>%
+  summarize(years_list = list(unique(year)))
+
+shared_years_nhoods_num
+
+
+
+#check if eight of them have the same period of years
+shared_years_nhoods<-rent_new %>%
+  filter(nhood %in% c("bernal", "diamond heights", "ingleside", "lower haight", "noe valley", "pacific heights","cole valley", "glen park", "lakeshore","outer sunset", "potrero hill","parkside", "sea cliff"))%>%
+  group_by(nhood) %>%
+  summarize(years_list = list(sort(unique(year)))) %>%
+  mutate(years_string = map_chr(years_list, ~ paste(.x, collapse = ', '))) %>%
+  select(-years_list) %>%
+  ungroup()%>%
+  mutate(row_id = row_number()) %>%
+  select(row_id, everything())
+
+shared_years_nhoods
 
 #get eight neiborhood
 rent_updated <- rent_new %>% 
-  filter(nhood %in% c("alamo square", "bernal", "bayview", "treasure island", "twin peaks", "lakeshore", "pacific heights", "russian hill"))
+  filter(nhood %in% c("bernal", "diamond heights", "ingleside", "lower haight", "noe valley", "pacific heights","cole valley", "glen park"))
 
 rent_updated
 
 ```
+
 Create a visualization that will help you compare the distribution of rental prices (price) per bedroom (beds) across neighborhoods (nhood) in the city of San Francisco (city == "san francisco"), over time. Your visualization should also display some measure of the variability in your data. You get to decide what type of visualization to create and there is more than one correct answer! In your answer, include a brief description of why you made the choices you made as well as an interpretation of the findings of how rental prices vary over time and neighborhoods in San Francisco.
 ```{r}
+# Calculate the median price per bedroom for each neighborhood based on the year
+median_prices <- rent_updated %>%
+  group_by(year, nhood) %>%
+  summarize(median_price_per_bedroom = median(price_per_bedroom, na.rm = TRUE)) %>%
+  ungroup()
+median_prices 
+
+#use a box plot. 
+
+box_lot<-ggplot(data = median_prices, aes(x =nhood , y = median_price_per_bedroom)) +
+  geom_boxplot() +
+  theme_minimal() +
+  labs(title = "Box Plot of Median Rental Prices per Bedroom Over Time",
+       x = "neighberhood",
+       y = "Median Price per Bedroom")
+
+box_lot
+
+
+#Scatter Plot with Trend Lines
+scatter_plot<-ggplot(data = median_prices, aes(x = year, y = median_price_per_bedroom, color = nhood)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +  
+  scale_x_continuous(breaks = seq(min(median_prices$year), max(median_prices$year), by = 1)) +
+  theme_minimal() +
+  labs(title = "Scatter Plot with Trend Lines for Median Rental Prices per Bedroom Over Time",
+       x = "Year",
+       y = "Median Price per Bedroom")+
+  theme(legend.position = "right",
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
+
+
+scatter_plot
+
+median_price_plot <- ggplot(median_prices, aes(x = year, y = median_price_per_bedroom, group = nhood, color = nhood)) +
+  geom_line() +
+  geom_point() +
+  scale_x_continuous(breaks = seq(min(median_prices$year), max(median_prices$year), by = 1)) +
+  theme_minimal() +
+  labs(title = "Median Rental Prices per Bedroom Across Neighborhoods Over Time",
+       x = "Year",
+       y = "Median Price per Bedroom",
+       color = "Neighborhood") +
+  theme(legend.position = "right",
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
+
+
+median_price_plot
+
+combine_plot_thisone<-median_price_plot/scatter_plot/box_lot
+combine_plot_thisone
 
 
 ```
+The visualization provided appears to be a multi-line chart, which is an effective choice for comparing the trends of median rental prices per bedroom across different neighborhoods over time. This type of chart allows viewers to follow the progression of each neighborhood's median prices year by year and compare them against each other.
+
+Based on the visualization, here's an interpretation of the findings:
+
+1. **Variability Over Time**: There is significant variability in median rental prices over time, with some neighborhoods experiencing more volatility than others. This could be indicative of changing demand, economic factors, or development within those areas.
+
+2. **Comparing Neighborhoods**: Some neighborhoods consistently have higher median rental prices per bedroom, like Pacific Heights and Cole Valley. These areas could be more desirable due to various factors such as location, amenities, or historical prestige.
+
+3. **Trend Over Years**: Almost all neighborhoods show a general upward trend in rental prices, which is consistent with the overall increase in housing costs, especially in a city like San Francisco known for its high cost of living.
+
+4. **Sharp Changes**: Specific years show sharp increases or decreases in median rental prices for certain neighborhoods. These could be attributed to local events, policy changes, or market corrections.
+
+5. **Data Gaps**: There might be gaps or inconsistencies in the data collection process for certain years or neighborhoods. For instance, if a neighborhood doesn't have a line for a particular year, it could mean there was no data available for that year.
+
+6. **Choice of Metric**: The median was chosen over the mean to represent the central tendency of rental prices because it is less affected by extreme values, which can be common in real estate data.
+
+**Conclusion**: The line chart demonstrates that while there is a general increase in rental prices across neighborhoods, the rate of increase is not uniform. Factors such as location, local economy, and property attributes likely influence these trends. Additionally, the high variability suggests that renters' experiences can differ significantly based on the neighborhood and the timing of their rental agreements. It is crucial for potential renters to consider historical pricing trends as well as current market conditions when evaluating neighborhoods for living.
+
+**Recommendation**: For further analysis, it would be beneficial to incorporate additional data points such as average income levels, neighborhood amenities, and historical events that could explain some of the fluctuations seen in the rental prices. It's also important to ensure data consistency and completeness to make the most informed interpretations possible.
 
 ```{r}
 ```
