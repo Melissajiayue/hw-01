@@ -4,6 +4,10 @@ author: "Jiayue He"
 format: 
   html:
     embed-resources: true
+execute: 
+  warning: false
+  message: false 
+  error: false
 toc: true
 ---
 
@@ -630,18 +634,14 @@ temp_plot_fixed <- last_plot()
 ```
 
 ```{r}
+
 #arrange two plots on top of each other with a specified height ratio 
-grid.arrange(geogragh_plot_fixed, temp_plot_fixed, nrow=2, heights=c(3.5, 1.2))
+grid.arrange(geogragh_plot_fixed, temp_plot_fixed, nrow=2, heights=c(3.5, 1.7))
 
 #draw a rectangle around the entire grid of plots using gray border line with no fill color 
 grid.rect(width = .99, height = .99, gp = gpar(lwd = 2, col = "gray", fill = NA))
+
 ```
-
-Step 7) personlized the gragh
-```{r}
-
-
-````
 
 
 Reference: 
