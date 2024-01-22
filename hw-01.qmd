@@ -568,48 +568,73 @@ plot_2
 Step 3) add cities' name and change color to better match the original grah
 ```{r}
 
-plot_3<-ggplot() +
+geogragh_plot<-ggplot() +
   geom_path(data = troops, aes(x = long, y = lat, group = group, 
                                color = direction, size = survivors),
             lineend = "round") +
   geom_point(data = cities, aes(x = long, y = lat)) + # add points to cities
-  geom_text(data = cities, aes(x = long, y = lat, label = city), vjust = 1.5) +#add text to city points which below the points
-  scale_size(range = c(0.5, 15)) + 
+  geom_text(data = cities, aes(x = long, y = lat, label = city), 
+            vjust = 1.5, #add text to city points which below the points
+            size = 3) +
+  scale_size(range = c(0.5, 13)) + 
   scale_colour_manual(values = c("#DFC17E", "#252523")) +#change color to match original graph
   labs(x = NULL, y = NULL) + #remove axis labels 
   guides(color = FALSE, size = FALSE) #remove the lengends
 
-plot_3
+geogragh_plot
 
 ```
 The following code are copied from http://euclid.psych.yorku.ca/www/psy6135/tutorials/Minard.html: 
 
 Step 4) create temperature plot 
-```{r}
-temp_plot_1<-ggplot(temperatures, aes(long, temp)) +
-    geom_path(color="grey", size=1.5) +
-    geom_point(size=2) 
-temp_plot_1
-
-```
-Step 5) Add lables to the temperatures's datase 
 
 ```{r}
+#create a new column to the temperatures data set, the new column contains the lables needed by the gragh. 
 temperatures <- temperatures %>%
   mutate(nice.label = paste0(temp, "°, ", month, ". ", day))
 temperatures
 
-temp_plot_2<-ggplot(temperatures, aes(long, temp)) +
-    geom_path(color="grey", size=1.5) +
-    geom_point(size=1) +
-  geom_text(aes(label=nice.label), size=2, vjust=1.5)
-temp_plot_2
+temp_plot<-ggplot(temperatures, aes(long, temp)) + #using longtitudes as x axis, and temperature as the y axis 
+    geom_path(color="grey", size=1.5) + #connect the temperature points 
+    geom_point(size=1) + #add points for each temperatures
+  geom_text(aes(label=nice.label), size=2, vjust=1.5) #add text labels below each points 
+temp_plot
 
 ```
 Step 6) combine two graphs together: 
 
 ```{r}
+geogragh_plot +
+  coord_cartesian(xlim = c(24, 38)) + # set the x asis to coincide with temperature plot 
+  labs(x = NULL, y = NULL) + #get rid of the x and y axis' labels
+  theme_void() # disable the back gourd color
 
+#store the final plot in a variable for later use 
+geogragh_plot_fixed <- last_plot() 
+
+
+
+temp_plot + 
+  coord_cartesian(xlim = c(24, 38)) + #set x axis to coincide with geography plot
+  labs(x = NULL, y= NULL) +  # remove  x y axis's labels
+  theme_bw() + # use white background and balck grdilines 
+  theme(panel.grid.major.x = element_blank(), #remove major x gridelines 
+        panel.grid.minor.x = element_blank(), #remove minor x gridlines 
+        panel.grid.minor.y = element_blank(), #remove minor y gradilines 
+        axis.text.x = element_blank(),  #remove x-axis text 
+        axis.ticks = element_blank(), # remove axis thicks 
+        panel.border = element_blank()) #remove border around the poanel 
+
+#store the final temperature plot in a varaible to later use 
+temp_plot_fixed <- last_plot()
+```
+
+```{r}
+#arrange two plots on top of each other with a specified height ratio 
+grid.arrange(geogragh_plot_fixed, temp_plot_fixed, nrow=2, heights=c(3.5, 1.2))
+
+#draw a rectangle around the entire grid of plots using gray border line with no fill color 
+grid.rect(width = .99, height = .99, gp = gpar(lwd = 2, col = "gray", fill = NA))
 ```
 
 Step 7) personlized the gragh
