@@ -514,6 +514,118 @@ combine_plot_thisone
 ```
 
 ## 5 - Napoleon’s march.
+
+Get the Napoleon's dataset -- myself's code
+```{r}
+library(tidyverse)
+library(lubridate)
+#install.packages("pander")
+#install.packages("ggmap")
+
+library(ggmap)
+library(ggrepel)
+library(gridExtra)
+library(pander)
+
+napoleon_data <- readRDS("/Users/melissahe/Documents/GitHub/hw-01/data/napoleon.rds")
+
+# Check the structure of the loaded data
+str(napoleon_data)
+
+cities <- napoleon_data$cities
+temperatures <- napoleon_data$temperatures
+troops <- napoleon_data$troops
+```
+The following code are copied from https://github.com/andrewheiss/fancy-minard: 
+
+Step 1) create the basic skeleton of the geography plot
+
+```{r}
+#Display the first six ros of the troops data frame. 
+troops %>% head() %>% pandoc.table(style = "rmarkdown")
+#create a line plot based the dataset: troops, using longitude as x-axis, latitude as y axis, 
+#using group to group the points that should be connected together in a path
+ori_plot<-ggplot(troops, aes(x = long, y = lat, group = group)) +
+  geom_path() #connect the data points. 
+ori_plot
+```
+Step 2) add more aesthetic elements to the original map (above)
+
+The size of the path hides the drama of the plot. Napoleon started the 1812 campaign with 422,000 troops and returned with only 10,000. ggplot automatically makes discrete categories for the survivors variable, resulting in three not-very-granular categories. We can adjust the scale to allow for more categories, thus showing more variation in size and highlighting the devastation of the army:
+```{r}
+
+#same as the above code, the x,y axis remain the same, but add different colors based on the two directions of the troop's movement 
+#using survivors to decide the wide size of the path
+#using round line make the lines connect smoother. 
+
+plot_2<-ggplot(troops, aes(x = long, y = lat, group = group, 
+                   color = direction, size = survivors)) +
+  geom_path(lineend = "round")+
+  scale_size(range = c(0.5, 15)) 
+# Adjust the size scale to allow more variation which can make the size of each path more similar to the original graph 
+plot_2
+```
+Step 3) add cities' name and change color to better match the original grah
+```{r}
+
+plot_3<-ggplot() +
+  geom_path(data = troops, aes(x = long, y = lat, group = group, 
+                               color = direction, size = survivors),
+            lineend = "round") +
+  geom_point(data = cities, aes(x = long, y = lat)) + # add points to cities
+  geom_text(data = cities, aes(x = long, y = lat, label = city), vjust = 1.5) +#add text to city points which below the points
+  scale_size(range = c(0.5, 15)) + 
+  scale_colour_manual(values = c("#DFC17E", "#252523")) +#change color to match original graph
+  labs(x = NULL, y = NULL) + #remove axis labels 
+  guides(color = FALSE, size = FALSE) #remove the lengends
+
+plot_3
+
+```
+The following code are copied from http://euclid.psych.yorku.ca/www/psy6135/tutorials/Minard.html: 
+
+Step 4) create temperature plot 
+```{r}
+temp_plot_1<-ggplot(temperatures, aes(long, temp)) +
+    geom_path(color="grey", size=1.5) +
+    geom_point(size=2) 
+temp_plot_1
+
+```
+Step 5) Add lables to the temperatures's datase 
+
+```{r}
+temperatures <- temperatures %>%
+  mutate(nice.label = paste0(temp, "°, ", month, ". ", day))
+temperatures
+
+temp_plot_2<-ggplot(temperatures, aes(long, temp)) +
+    geom_path(color="grey", size=1.5) +
+    geom_point(size=1) +
+  geom_text(aes(label=nice.label), size=2, vjust=1.5)
+temp_plot_2
+
+```
+Step 6) combine two graphs together: 
+
 ```{r}
 
 ```
+
+Step 7) personlized the gragh
+```{r}
+
+
+````
+
+
+Reference: 
+#I get to know what is Napoleon's March 
+https://ageofrevolution.org/200-object/flow-map-of-napoleons-invasion-of-russia/#:~:text=Napoleon%20invaded%20Russia%20in%20June,their%20long%20wars%20against%20France. 
+
+#I borrow most of the code from the following link to recreate the geography plot
+https://github.com/andrewheiss/fancy-minard
+
+#I borrow most of the code frme the following link to recreate the temperature plot
+http://euclid.psych.yorku.ca/www/psy6135/tutorials/Minard.html
+
